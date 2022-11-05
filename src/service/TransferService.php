@@ -32,7 +32,7 @@ class TransferService
         return 0;
     }
 
-    public function inizitializeTransfer($size_rgb, $size_nir)
+    public function initializeTransfer($size_rgb, $size_nir)
     {
         $uuid = uniqid("", true);
        
@@ -81,13 +81,12 @@ class TransferService
 
     public static function thereIsOutputFile($uuid, $type)
     {
-        if($type == "RGB") return is_file(PROJECT_ROOT_PATH."/output/".$uuid."/RGB/".OUTPUT_FILE.RGB_FORMAT);
-        else return is_file(PROJECT_ROOT_PATH."/output/".$uuid."/NIR/".OUTPUT_FILE.NIR_FORMAT);
+        return is_file(PROJECT_ROOT_PATH."/output/".$uuid."/".$type."/".OUTPUT_FILE.RGB_FORMAT);
     }
 
     public static function thereIsSameChunk($uuid, $type, $index)
     {
-        if($type == "RGB") return is_file(PROJECT_ROOT_PATH."/output/".$uuid."/RGB/".$index);
-        else return is_file(PROJECT_ROOT_PATH."/output/".$uuid."/NIR/".$index);
+        return is_file(PROJECT_ROOT_PATH."/output/".$uuid."/".$type."/".$index);
     }
 }
+?>

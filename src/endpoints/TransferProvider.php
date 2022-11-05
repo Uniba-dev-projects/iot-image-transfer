@@ -23,7 +23,7 @@ class TransferProvider
         if(!is_numeric($request_body["size_nir"])  || !is_numeric($request_body["size_rgb"])) return HttpResponse::send_400_BadRequest();
 
         try {
-            $response = $this->transferService->inizitializeTransfer($request_body['size_rgb'], $request_body['size_nir']);
+            $response = $this->transferService->initializeTransfer($request_body['size_rgb'], $request_body['size_nir']);
             return HttpResponse::send_200_Ok($response);
         } catch(Exception $e) {
             return HttpResponse::send_500_InternalServerError();
@@ -50,16 +50,5 @@ class TransferProvider
             return HttpResponse::send_500_InternalServerError();
         }
     }
-
-    public function httpGetTransfer() {
-        $arrQueryStringParams = BaseController::getQueryStringParams();
-        if(count($arrQueryStringParams) == 0 || $arrQueryStringParams == NULL) return HttpResponse::send_400_BadRequest();
-        if(!in_array("id", array_keys($arrQueryStringParams))) return HttpResponse::send_400_BadRequest();
-
-        try {
-           $this->transferService->getNDVIImage($arrQueryStringParams['id']);
-        } catch(Exception $e) {
-            return HttpResponse::send_500_InternalServerError();
-        }
-    }
 }
+?>

@@ -6,7 +6,6 @@ use Core\Service\TransferService as TransferService;
 
 class ImageService
 {
-    #TODO: CHECK FILE EXIST
     public function getNDVIImage($uuid)
     {
         if(!TransferService::thereIsIdDir($uuid)) return -1;
@@ -98,3 +97,4 @@ class ImageService
         return $discretization[0];
     }
 }
+?>
