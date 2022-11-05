@@ -1,0 +1,139 @@
+openapi: 3.0.1
+info:
+  title: NDVI Provider
+  version: v1
+  description: |-
+    This is a sample Http Server, Micro-services oriented, based on the OpenAPI 3.0 specification.  You can find out more about
+    Swagger at [https://swagger.io](https://swagger.io).
+    
+    Authors: Luca Corallo
+servers:
+  - url: 'http://cloud-simple.it/NDVI_SIMPLE/api/v1'
+  
+paths:
+  /transfer:
+    put:
+      tags:
+        - 'Transfer Manager'
+      description: Initialize the transfer of the chunks relatives to RGB and NIR images
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/transfer_init'
+      responses:
+        200:
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/transfer_init_response'
+        400:
+          description: Bad Request
+        500:
+          description: Internal Server Error
+    post:
+      tags:
+        - 'Transfer Manager'
+      description: Send a chunk relative to RGB or NIR image
+      parameters:
+        - name: id
+          in: query
+          schema:
+            type: string
+            format: uuid
+          description: UUID of the trasfer
+        - name: type
+          in: query
+          schema:
+            type: string
+            enum:
+              - RGB
+              - NIR
+          description: Type of the chunk associated
+        - name: index
+          in: query
+          schema:
+            type: integer
+            format: int64
+          description: Index of the chunk
+      responses:
+        204:
+          description: No Content
+        400:
+          description: Bad Request
+        403:
+          description: Forbidden
+        404:
+          description: Not Found
+        409:
+          description: Conflict
+        500:
+          description: Internal Server Error
+  /ndvi:
+    get:
+      tags:
+      - 'Image Manager'
+      description: Get the NDVI image
+      parameters:
+        - name: id
+          in: query
+          schema:
+            type: string
+            format: uuid
+          description: UUID of the trasfer
+      responses:
+        200:
+          x-is-file: true
+          description: OK
+          content:
+            image/png:
+              schema:
+                type: string
+                format: binary
+        400:
+          description: Bad Request
+        403:
+          description: Forbidden
+        404:
+          description: Not Found
+        500:
+          description: Internal Server Error
+      
+      
+  
+
+components:
+  schemas:
+    transfer_init:
+        type: object
+        required:
+        - size_rgb
+        - size_nir
+        properties:
+          size_rgb:
+            type: integer
+            format: int64
+            example: 123575
+          size_nir:
+            type: integer
+            format: int64
+            example: 241234
+    transfer_init_response:
+        type: object
+        required:
+        - id
+        - size_rgb
+        - size_nir
+        properties:
+          id:
+            type: string
+            format: uuid
+          size_rgb:
+            type: integer
+            format: int64
+            example: 123575
+          size_nir:
+            type: integer
+            format: int64
+            example: 241234
